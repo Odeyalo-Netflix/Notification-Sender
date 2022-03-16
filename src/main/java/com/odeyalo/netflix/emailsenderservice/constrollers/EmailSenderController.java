@@ -2,9 +2,8 @@ package com.odeyalo.netflix.emailsenderservice.constrollers;
 
 import com.odeyalo.netflix.emailsenderservice.dto.EmailMessageDTO;
 import com.odeyalo.netflix.emailsenderservice.service.EmailSenderManager;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,9 +19,9 @@ public class EmailSenderController {
         this.senderManager = senderManager;
     }
 
-    @GetMapping("/send")
-    public ResponseEntity<?> sendMail(@RequestBody EmailMessageDTO dto) throws MessagingException {
+    @Async
+    @PostMapping("/send")
+    public void sendMail(@RequestBody EmailMessageDTO dto) throws MessagingException {
         this.senderManager.send(dto.getBody(), dto.getSubject(), dto.getTo());
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
