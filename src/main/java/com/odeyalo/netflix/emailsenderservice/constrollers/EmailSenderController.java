@@ -1,7 +1,9 @@
 package com.odeyalo.netflix.emailsenderservice.constrollers;
 
 import com.odeyalo.netflix.emailsenderservice.dto.EmailMessageDTO;
-import com.odeyalo.netflix.emailsenderservice.service.EmailSenderManager;
+import com.odeyalo.netflix.emailsenderservice.service.sender.email.EmailSenderManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +17,8 @@ import javax.mail.MessagingException;
 public class EmailSenderController {
     private final EmailSenderManager senderManager;
 
-    public EmailSenderController(EmailSenderManager senderManager) {
+    @Autowired
+    public EmailSenderController(@Qualifier("simpleAsyncEmailSenderManager") EmailSenderManager senderManager) {
         this.senderManager = senderManager;
     }
 
