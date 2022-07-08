@@ -1,4 +1,4 @@
-package com.odeyalo.netflix.emailsenderservice.service;
+package com.odeyalo.netflix.emailsenderservice.service.sender.email;
 
 import javax.mail.MessagingException;
 
