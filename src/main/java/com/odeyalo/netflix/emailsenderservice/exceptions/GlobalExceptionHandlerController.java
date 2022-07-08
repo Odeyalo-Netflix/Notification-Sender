@@ -14,5 +14,4 @@ public class GlobalExceptionHandlerController {
     public ResponseEntity<?> handleMessagingException(MessagingException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
 }
