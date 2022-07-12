@@ -8,7 +8,7 @@ public interface Oauth2ClientAccessTokenResolver {
 
     /**
      * @param credentials - path to file with credentials
-     * @see credentials.json example
+     * @see resources/credentials.example.json example
      * @return - access token from oauth2 server
      */
     String getAccessToken(Path credentials) throws AccessTokenResolvingProcessException;
