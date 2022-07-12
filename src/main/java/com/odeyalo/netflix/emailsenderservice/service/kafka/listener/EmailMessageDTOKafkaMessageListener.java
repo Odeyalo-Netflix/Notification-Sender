@@ -1,7 +1,7 @@
 package com.odeyalo.netflix.emailsenderservice.service.kafka.listener;
 
 import com.odeyalo.netflix.emailsenderservice.dto.EmailMessageDTO;
-import com.odeyalo.netflix.emailsenderservice.service.sender.email.EmailSenderManager;
+import com.odeyalo.netflix.emailsenderservice.service.sender.email.EmailSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,9 +13,9 @@ import javax.mail.MessagingException;
 @Service
 public class EmailMessageDTOKafkaMessageListener implements KafkaMessageListener<EmailMessageDTO> {
     private final Logger logger = LoggerFactory.getLogger(EmailMessageDTOKafkaMessageListener.class);
-    private final EmailSenderManager manager;
+    private final EmailSender manager;
 
-    public EmailMessageDTOKafkaMessageListener(@Qualifier("simpleAsyncEmailSenderManager") EmailSenderManager manager) {
+    public EmailMessageDTOKafkaMessageListener(@Qualifier("simpleAsyncEmailSender") EmailSender manager) {
         this.manager = manager;
     }
 
