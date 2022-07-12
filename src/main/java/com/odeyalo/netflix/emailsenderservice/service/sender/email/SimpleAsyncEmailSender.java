@@ -9,15 +9,15 @@ import javax.mail.MessagingException;
 
 /**
  * @deprecated Do not use this sender, since Google turned off login to account using Java Mail API. You can use:
- * @see GoogleApiAsyncMailSenderManager
+ * @see GoogleXOauth2AsyncMailSender
  * Use it only for email service that not required oauth2(such Yandex mail)
  */
 @Component
 @Deprecated
-public class SimpleAsyncEmailSenderManager implements EmailSenderManager {
+public class SimpleAsyncEmailSender implements EmailSender {
     private final JavaMailSender mailSender;
 
-    public SimpleAsyncEmailSenderManager(JavaMailSender mailSender) {
+    public SimpleAsyncEmailSender(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
