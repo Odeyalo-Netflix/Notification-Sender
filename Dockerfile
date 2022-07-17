@@ -4,5 +4,4 @@ WORKDIR notification-sender
 
 COPY . .
 
-RUN echo "$token"
-ENTRYPOINT ["mvn", "-s", "maven-settings.xml", "install"]
+ENTRYPOINT mvn -s maven-settings.xml clean install
