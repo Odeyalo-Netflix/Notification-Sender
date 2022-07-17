@@ -8,16 +8,20 @@ on:
     branches:
       - master
       - dev
-
+env:
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  TOKEN: aboba
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: test
+        run: env
       - name: Build docker image
-        env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: docker build -t image  .
       - name: Run docker image
         run: docker run image -e token=${ACCESS_TOKEN}
-
+      - name: Say hello if token valid
+        if: ${{ env.TOKEN == 'aboba' }}
+        run: echo hello, $TOKEN
