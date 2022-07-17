@@ -18,6 +18,13 @@
         <spring-cloud.version>2021.0.1</spring-cloud.version>
         <feight-cliets.version>1.1-SNAPSHOT</feight-cliets.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/Odeyalo-Netflix/Feign-Clients/mvn-repo/</url>
+        </repository>
+    </repositories>
     <dependencies>
 
         <dependency>
@@ -58,7 +65,11 @@
             <artifactId>twilio</artifactId>
             <version>8.8.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.odeyalo.support</groupId>
+            <artifactId>clients</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.google.auth</groupId>
             <artifactId>google-auth-library-oauth2-http</artifactId>

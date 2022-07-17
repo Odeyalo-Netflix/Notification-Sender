@@ -4,4 +4,4 @@ WORKDIR notification-sender
 
 COPY . .
 
-ENTRYPOINT ["mvn", "spring-boot:run"]
+ENTRYPOINT ["mvn", "-s", "maven-settings.xml", "install"]
