@@ -1,0 +1,25 @@
+name: auth-microservice
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
+
+env:
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: test
+        run: env
+      - name: Build docker image
+        run: docker build -t image  .
+      - name: Run docker image
+        run: docker run -e token=${ACCESS_TOKEN} image

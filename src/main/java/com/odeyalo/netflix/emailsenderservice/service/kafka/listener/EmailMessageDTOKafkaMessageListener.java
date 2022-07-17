@@ -15,7 +15,7 @@ public class EmailMessageDTOKafkaMessageListener implements KafkaMessageListener
     private final Logger logger = LoggerFactory.getLogger(EmailMessageDTOKafkaMessageListener.class);
     private final EmailSender manager;
 
-    public EmailMessageDTOKafkaMessageListener(@Qualifier("simpleAsyncEmailSender") EmailSender manager) {
+    public EmailMessageDTOKafkaMessageListener(@Qualifier("googleXOauth2AsyncMailSender") EmailSender manager) {
         this.manager = manager;
     }
 
