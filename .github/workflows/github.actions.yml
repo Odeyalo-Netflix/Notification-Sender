@@ -8,17 +8,22 @@ on:
     branches:
       - master
       - dev
+
 env:
-  DAY_OF_WEEK: Monday
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  TOKEN: aboba
 
 jobs:
-  greeting_job:
+  test:
     runs-on: ubuntu-latest
-    env:
-      Greeting: Hello
     steps:
+      - uses: actions/checkout@v3
+      - name: test
+        run: env
+      - name: Build docker image
+        run: docker build -t image  .
+      - name: Run docker image
+        run: docker run image -e token=${ACCESS_TOKEN}
       - name: "Say Hello Mona it's Monday"
-        if: ${{ env.DAY_OF_WEEK == 'Monday' }}
-        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
-        env:
-          First_Name: Mona
+        if: ${{ env.TOKEN == 'aboba' }}
+        run: echo "Hello!"
