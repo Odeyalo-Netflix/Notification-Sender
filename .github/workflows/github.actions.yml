@@ -19,5 +19,5 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: docker build -t image  .
       - name: Run docker image
-        run: docker run image --build-arg token=${ACCESS_TOKEN}
+        run: docker run image -e token=${ACCESS_TOKEN}
 
