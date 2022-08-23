@@ -1,6 +1,6 @@
 package com.odeyalo.netflix.emailsenderservice.config.kafka;
 
-import com.odeyalo.netflix.emailsenderservice.dto.EmailMessageDTO;
+import com.odeyalo.support.clients.notification.dto.EmailMessageDTO;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

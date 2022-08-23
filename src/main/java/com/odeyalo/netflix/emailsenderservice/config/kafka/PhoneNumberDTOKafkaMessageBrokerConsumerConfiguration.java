@@ -1,6 +1,6 @@
 package com.odeyalo.netflix.emailsenderservice.config.kafka;
 
-import com.odeyalo.netflix.emailsenderservice.dto.PhoneNumberSmsDTO;
+import com.odeyalo.support.clients.dto.PhoneNumberSmsDTO;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

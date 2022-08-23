@@ -1,7 +1,7 @@
 package com.odeyalo.netflix.emailsenderservice.constrollers;
 
-import com.odeyalo.netflix.emailsenderservice.dto.EmailMessageDTO;
-import com.odeyalo.netflix.emailsenderservice.service.sender.email.EmailSender;
+import com.odeyalo.netflix.emailsenderservice.service.sender.email.CachingEmailSender;
+import com.odeyalo.support.clients.notification.dto.EmailMessageDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,14 +15,14 @@ import java.security.GeneralSecurityException;
 @RestController
 @RequestMapping("/api/v1")
 public class EmailSenderController {
-    private final EmailSender sender;
+    private final CachingEmailSender sender;
 
-    public EmailSenderController(@Qualifier("googleXOauth2AsyncMailSender") EmailSender sender) {
+    public EmailSenderController(@Qualifier("googleXOauth2AsyncCachingMailSender") CachingEmailSender sender) {
         this.sender = sender;
     }
 
     @PostMapping("/send")
     public void sendMail(@RequestBody EmailMessageDTO dto) throws MessagingException, IOException, GeneralSecurityException {
-        this.sender.send(dto.getBody(), dto.getSubject(), dto.getTo());
+        this.sender.cacheMessage(dto);
     }
 }

@@ -1,7 +1,7 @@
 package com.odeyalo.netflix.emailsenderservice.service.kafka.listener;
 
-import com.odeyalo.netflix.emailsenderservice.dto.PhoneNumberSmsDTO;
 import com.odeyalo.netflix.emailsenderservice.service.sender.sms.PhoneNumberMessageSender;
+import com.odeyalo.support.clients.dto.PhoneNumberSmsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
