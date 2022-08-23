@@ -18,11 +18,12 @@ public class GoogleOauth2ClientAccessTokenResolver implements Oauth2ClientAccess
     @Override
     public String getAccessToken(Path credentials) throws AccessTokenResolvingProcessException {
         try {
+            this.logger.info("Resolve token from path: {}", credentials.toString());
             GoogleCredentials cred = GoogleCredentials.fromStream(new FileInputStream(credentials.toString()));
             cred.refreshIfExpired();
             return cred.getAccessToken().getTokenValue();
         } catch (IOException e) {
-            this.logger.error("Error during resolving access token, the error is: {}", e.getClass());
+            this.logger.error("Error during resolving access token, the error is: {}, message: {}, stacktrace: {}", e.getClass(), e.getMessage(), e.getStackTrace());
             throw new AccessTokenResolvingProcessException("Error during resolving access token", e);
         }
     }
@@ -36,10 +37,10 @@ public class GoogleOauth2ClientAccessTokenResolver implements Oauth2ClientAccess
                 .setRefreshToken(refreshToken)
                 .build();
             cred.refreshIfExpired();
+            return cred.getAccessToken().getTokenValue();
         } catch (IOException e) {
             this.logger.error("Error during resolving access token, the error is: {}", e.getClass());
             throw new AccessTokenResolvingProcessException("Error during resolving access token", e);
         }
-        return null;
     }
 }
