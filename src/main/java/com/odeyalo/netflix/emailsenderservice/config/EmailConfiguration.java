@@ -15,6 +15,6 @@ public class EmailConfiguration {
         Map<String, String> map = mailProperties.getProperties();
         Properties properties = new Properties();
         properties.putAll(map);
-        return Session.getDefaultInstance(properties);
+        return Session.getInstance(properties);
     }
 }
