@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 /**
  * @deprecated Do not use this sender, since Google turned off login to account using Java Mail API. You can use:
@@ -23,11 +24,7 @@ public class SimpleAsyncEmailSender implements EmailSender {
 
     @Async
     @Override
-    public void send(String body, String subject, String to) throws MessagingException {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(to);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(body);
-        this.mailSender.send(mailMessage);
+    public void send(MimeMessage message) throws MessagingException {
+        this.mailSender.send(message);
     }
 }
