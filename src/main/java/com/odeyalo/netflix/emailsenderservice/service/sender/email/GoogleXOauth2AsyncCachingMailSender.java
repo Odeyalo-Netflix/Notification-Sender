@@ -1,13 +1,12 @@
 package com.odeyalo.netflix.emailsenderservice.service.sender.email;
 
 import com.odeyalo.netflix.emailsenderservice.exceptions.AccessTokenResolvingProcessException;
-import com.odeyalo.support.clients.notification.dto.EmailMessageDTO;
+import com.odeyalo.netflix.emailsenderservice.service.html.HtmlTemplateFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,34 +15,37 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Service
 public class GoogleXOauth2AsyncCachingMailSender implements CachingEmailSender {
     private final Oauth2ClientAccessTokenResolver accessTokenResolver;
     private final Session session;
-    private final ConcurrentLinkedQueue<EmailMessageDTO> cache = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<MimeMessage> cache = new ConcurrentLinkedQueue<>();
     private final Logger logger = LoggerFactory.getLogger(GoogleXOauth2AsyncCachingMailSender.class);
     @Value("${app.mail.username}")
     private String username;
     @Value("${app.credentials.path}")
     private String GOOGLE_OAUTH2_CREDENTIALS_JSON_FILE_PATH;
-
+    private final HtmlTemplateFactory factory;
     @Autowired
-    public GoogleXOauth2AsyncCachingMailSender(@Qualifier("googleOauth2ClientAccessTokenResolver") Oauth2ClientAccessTokenResolver accessTokenResolver, Session session) {
+    public GoogleXOauth2AsyncCachingMailSender(@Qualifier("googleOauth2ClientAccessTokenResolver") Oauth2ClientAccessTokenResolver accessTokenResolver, Session session, HtmlTemplateFactory factory) {
         this.accessTokenResolver = accessTokenResolver;
         this.session = session;
+        this.factory = factory;
     }
 
     @Override
-    public void cacheMessage(EmailMessageDTO message) {
+    public void cacheMessage(MimeMessage message) {
         this.cache.add(message);
         this.logger.info("Cached message with body: {}", message);
     }
 
     @Override
-    @Scheduled(fixedDelay = 60000)
+    @Scheduled(fixedDelay = 20000)
     public void sendCachedMessage() throws MessagingException {
         if (cache.isEmpty()) {
             this.logger.info("Message cache is empty. Skipped");
@@ -56,19 +58,14 @@ public class GoogleXOauth2AsyncCachingMailSender implements CachingEmailSender {
 
     @Override
     @Async
-    public void send(String body, String subject, String to) throws MessagingException {
+    public void send(MimeMessage message) throws MessagingException {
         try {
-            this.logger.info("Starting email message sending to: {}", to);
-            String accessToken = this.accessTokenResolver.getAccessToken(Paths.get(GOOGLE_OAUTH2_CREDENTIALS_JSON_FILE_PATH));
-            MimeMessage message = new MimeMessage(session);
-            MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setText(body);
-            helper.setSubject(subject);
-            helper.setTo(to);
+            this.logger.info("Starting email message sending to: {}", Arrays.toString(message.getAllRecipients()));
+            String accessToken = this.accessTokenResolver.getAccessToken(Path.of(GOOGLE_OAUTH2_CREDENTIALS_JSON_FILE_PATH));
             Transport smtp = session.getTransport("smtp");
             smtp.connect(username, accessToken);
             smtp.sendMessage(message, message.getAllRecipients());
-            this.logger.info("Successful sent message to: {}", to);
+            this.logger.info("Successful sent message to: {}", Arrays.toString(message.getAllRecipients()));
         } catch (AccessTokenResolvingProcessException e) {
             this.logger.error("Cannot resolve access token. Error message: {}, stacktrace: {}", e.getMessage(), e.getStackTrace());
             throw new MessagingException("Error during sending message. Error code: 601. Please try again later");
@@ -84,27 +81,16 @@ public class GoogleXOauth2AsyncCachingMailSender implements CachingEmailSender {
     protected void doSendCachedMessage() throws MessagingException {
         try {
             String accessToken = this.accessTokenResolver.getAccessToken(Paths.get(GOOGLE_OAUTH2_CREDENTIALS_JSON_FILE_PATH));
-            MimeMessage mimeMessage = new MimeMessage(session);
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
             Transport smtp = session.getTransport("smtp");
             smtp.connect(username, accessToken);
-            // Send messages while cache isn't empty
+            // Send messages until cache isn't empty
             while (!(this.cache.isEmpty())) {
                 try {
-                    EmailMessageDTO message = this.cache.poll();
-                    String body = message.getBody();
-                    String subject = message.getSubject();
-                    String to = message.getTo();
-                    helper.setText(body);
-                    helper.setSubject(subject);
-                    helper.setTo(to);
-                    mimeMessage.saveChanges();
+                    MimeMessage mimeMessage = cache.poll();
                     smtp.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
-                    this.logger.info("Sent message to: {} with body {} by {}", to, body, subject);
                 } catch (MessagingException ex) {
                     this.logger.error("Error during message sending.", ex);
                 }
-
             }
         } catch (AccessTokenResolvingProcessException ex) {
             this.logger.error("Exception during access token resolving ", ex);
