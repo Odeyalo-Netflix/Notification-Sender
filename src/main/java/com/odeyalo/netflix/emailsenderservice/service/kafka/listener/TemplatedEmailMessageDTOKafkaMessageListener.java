@@ -1,9 +1,9 @@
 package com.odeyalo.netflix.emailsenderservice.service.kafka.listener;
 
 import com.odeyalo.netflix.emailsenderservice.service.html.HtmlTemplateFactory;
-import com.odeyalo.netflix.emailsenderservice.service.kafka.TemplatedEmailMessageDTO;
 import com.odeyalo.netflix.emailsenderservice.service.sender.email.CachingEmailSender;
 import com.odeyalo.netflix.emailsenderservice.service.support.MimeMessageBuilder;
+import com.odeyalo.support.clients.notification.dto.TemplatedEmailMessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

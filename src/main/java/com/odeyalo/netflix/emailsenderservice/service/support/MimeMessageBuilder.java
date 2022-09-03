@@ -1,7 +1,7 @@
 package com.odeyalo.netflix.emailsenderservice.service.support;
 
-import com.odeyalo.netflix.emailsenderservice.service.kafka.TemplatedEmailMessageDTO;
 import com.odeyalo.support.clients.notification.dto.EmailMessageDTO;
+import com.odeyalo.support.clients.notification.dto.TemplatedEmailMessageDTO;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
