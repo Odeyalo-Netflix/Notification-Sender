@@ -68,13 +68,32 @@
         <dependency>
             <groupId>com.odeyalo.support</groupId>
             <artifactId>clients</artifactId>
-            <version>1.1.3-SNAPSHOT</version>
+            <version>1.1.4-SNAPSHOT</version>
         </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.apache.velocity/velocity-engine-core -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+            <version>2.3</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.apache.velocity/spring-velocity-support -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>spring-velocity-support</artifactId>
+            <version>2.3</version>
+        </dependency>
+
+
         <dependency>
             <groupId>com.google.auth</groupId>
             <artifactId>google-auth-library-oauth2-http</artifactId>
             <version>1.7.0</version>
         </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -88,6 +107,31 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>Windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <avro.template.dir>src/main/resources/templates/</avro.template.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <avro.template.dir>${basedir}/src/main/resources/templates/</avro.template.dir>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
