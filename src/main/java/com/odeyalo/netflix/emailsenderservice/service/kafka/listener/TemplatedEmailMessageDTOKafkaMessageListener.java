@@ -13,21 +13,22 @@ import javax.mail.internet.MimeMessage;
 @Component
 public class TemplatedEmailMessageDTOKafkaMessageListener implements KafkaMessageListener<TemplatedEmailMessageDTO> {
     private final CachingEmailSender sender;
-    private final HtmlTemplateFactory templateFactory;
     private final MimeMessageBuilder builder;
+    private final HtmlTemplateFactory templateFactory;
 
     @Autowired
-    public TemplatedEmailMessageDTOKafkaMessageListener(CachingEmailSender sender, HtmlTemplateFactory templateFactory, MimeMessageBuilder builder) {
+    public TemplatedEmailMessageDTOKafkaMessageListener(CachingEmailSender sender,
+                                                        MimeMessageBuilder builder, HtmlTemplateFactory templateFactory) {
         this.sender = sender;
-        this.templateFactory = templateFactory;
         this.builder = builder;
+        this.templateFactory = templateFactory;
     }
 
     @Override
-    @KafkaListener(topics = {"TEMPLATE_EMAIL_MESSAGE_TOPIC"})
+    @KafkaListener(topics = {"TEMPLATE_EMAIL_MESSAGE_TOPIC"}, containerFactory = "templatedEmailMessageDTOConcurrentKafkaListenerContainerFactory")
     public void listen(TemplatedEmailMessageDTO templatedEmailMessageDTO) throws Exception {
         String templateType = templatedEmailMessageDTO.getTemplateType();
-        String templateBody = this.templateFactory.getTemplateBody(templateType);
+        String templateBody = this.templateFactory.getHtmlTemplate(templateType).getHtmlTemplateBody();
         MimeMessage message = this.builder.buildMimeMessage(templatedEmailMessageDTO, templateBody);
         this.sender.cacheMessage(message);
     }
