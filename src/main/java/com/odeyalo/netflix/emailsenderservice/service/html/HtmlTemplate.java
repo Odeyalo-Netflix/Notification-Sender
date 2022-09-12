@@ -5,16 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
+/**
+ * Returns raw html file data without dynamic values
+ */
 public interface HtmlTemplate {
 
-    String getHtmlTemplate() throws IOException;
-
+    String getHtmlTemplateBody() throws IOException;
 
     String getType();
 
+    boolean containsDynamicValues();
 
     @Autowired
-    default void registerMe(HtmlTemplateRegistry registry) {
+    default void autoRegisterInRegistry(HtmlTemplateRegistry registry) {
         registry.registryTemplate(getType(), this);
     }
 }
