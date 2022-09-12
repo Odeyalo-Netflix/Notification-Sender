@@ -4,14 +4,16 @@ import com.odeyalo.netflix.emailsenderservice.service.sender.sms.PhoneNumberMess
 import com.odeyalo.support.clients.dto.PhoneNumberSmsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PhoneNumberSmsDtoKafkaMessageListener implements KafkaMessageListener<PhoneNumberSmsDTO>{
     private final PhoneNumberMessageSender phoneNumberMessageSender;
-
     private final Logger logger = LoggerFactory.getLogger(PhoneNumberSmsDtoKafkaMessageListener.class);
+
+    @Autowired
     public PhoneNumberSmsDtoKafkaMessageListener(PhoneNumberMessageSender phoneNumberMessageSender) {
         this.phoneNumberMessageSender = phoneNumberMessageSender;
     }
