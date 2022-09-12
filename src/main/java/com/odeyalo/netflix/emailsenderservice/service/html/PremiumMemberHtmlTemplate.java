@@ -13,7 +13,7 @@ public class PremiumMemberHtmlTemplate implements HtmlTemplate {
     private String cache;
 
     @Override
-    public String getHtmlTemplate() throws IOException {
+    public String getHtmlTemplateBody() throws IOException {
         if (cache != null) {
             return cache;
         }
@@ -26,5 +26,10 @@ public class PremiumMemberHtmlTemplate implements HtmlTemplate {
     @Override
     public String getType() {
         return TEMPLATE_TYPE_NAME;
+    }
+
+    @Override
+    public boolean containsDynamicValues() {
+        return false;
     }
 }
