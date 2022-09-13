@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Returns raw html file data without dynamic values
  */
-public interface HtmlTemplate {
+public interface HtmlTemplateProvider {
 
     String getHtmlTemplateBody() throws IOException;
 

@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * Returns html template with dynamic values
  */
-public interface DynamicHtmlTemplate extends HtmlTemplate {
+public interface DynamicHtmlTemplateProvider extends HtmlTemplateProvider {
 
     @Override
     default String getHtmlTemplateBody() throws IOException {

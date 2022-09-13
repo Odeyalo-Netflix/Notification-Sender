@@ -14,15 +14,15 @@ import java.nio.file.Path;
  * Contains the code verification template to send to user email
  */
 @Component
-public class CodeVerificationEmailLetterDynamicHtmlTemplate implements DynamicHtmlTemplate {
+public class CodeVerificationEmailLetterDynamicHtmlTemplateProvider implements DynamicHtmlTemplateProvider {
     private final String templateBody;
     private final DynamicValuesHtmlTemplateInjector injector;
     public static final String TEMPLATE_TYPE = "CODE_VERIFICATION_EMAIL_LETTER_TEMPLATE";
 
     @Autowired
-    public CodeVerificationEmailLetterDynamicHtmlTemplate(@Value("${app.templates.code.verification}") String path,
-                                                          DynamicValuesHtmlTemplateInjector injector,
-                                                          CachedFileReader reader) {
+    public CodeVerificationEmailLetterDynamicHtmlTemplateProvider(@Value("${app.templates.code.verification}") String path,
+                                                                  DynamicValuesHtmlTemplateInjector injector,
+                                                                  CachedFileReader reader) {
         this.templateBody = new String(reader.readAllBytes(Path.of(path)));
         this.injector = injector;
     }

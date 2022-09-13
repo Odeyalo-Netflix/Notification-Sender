@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Component
-public class PremiumMemberHtmlTemplate implements HtmlTemplate {
+public class PremiumMemberHtmlTemplateProvider implements HtmlTemplateProvider {
     public static final String TEMPLATE_TYPE_NAME = "PREMIUM_MEMBER_EMAIL_LETTER";
     private final String path = "C:\\Users\\thepr_2iz2cnv\\IdeaProjects\\emailsenderservice\\src\\main\\resources\\templates\\premium.html"; //todo
     private String cache;
