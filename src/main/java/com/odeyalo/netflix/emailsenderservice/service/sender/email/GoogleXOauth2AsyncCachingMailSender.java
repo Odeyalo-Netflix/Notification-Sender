@@ -1,7 +1,7 @@
 package com.odeyalo.netflix.emailsenderservice.service.sender.email;
 
 import com.odeyalo.netflix.emailsenderservice.exceptions.AccessTokenResolvingProcessException;
-import com.odeyalo.netflix.emailsenderservice.service.html.HtmlTemplateFactory;
+import com.odeyalo.netflix.emailsenderservice.service.html.HtmlTemplateProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ public class GoogleXOauth2AsyncCachingMailSender implements CachingEmailSender {
     private String username;
     @Value("${app.credentials.path}")
     private String GOOGLE_OAUTH2_CREDENTIALS_JSON_FILE_PATH;
-    private final HtmlTemplateFactory factory;
+    private final HtmlTemplateProviderFactory factory;
     @Autowired
-    public GoogleXOauth2AsyncCachingMailSender(@Qualifier("googleOauth2ClientAccessTokenResolver") Oauth2ClientAccessTokenResolver accessTokenResolver, Session session, HtmlTemplateFactory factory) {
+    public GoogleXOauth2AsyncCachingMailSender(@Qualifier("googleOauth2ClientAccessTokenResolver") Oauth2ClientAccessTokenResolver accessTokenResolver, Session session, HtmlTemplateProviderFactory factory) {
         this.accessTokenResolver = accessTokenResolver;
         this.session = session;
         this.factory = factory;
