@@ -1,6 +1,6 @@
 package com.odeyalo.netflix.emailsenderservice.service.kafka.listener;
 
-import com.odeyalo.netflix.emailsenderservice.service.html.HtmlTemplateFactory;
+import com.odeyalo.netflix.emailsenderservice.service.html.HtmlTemplateProviderFactory;
 import com.odeyalo.netflix.emailsenderservice.service.sender.email.CachingEmailSender;
 import com.odeyalo.netflix.emailsenderservice.service.support.MimeMessageBuilder;
 import com.odeyalo.support.clients.notification.dto.TemplatedEmailMessageDTO;
@@ -14,11 +14,11 @@ import javax.mail.internet.MimeMessage;
 public class TemplatedEmailMessageDTOKafkaMessageListener implements KafkaMessageListener<TemplatedEmailMessageDTO> {
     private final CachingEmailSender sender;
     private final MimeMessageBuilder builder;
-    private final HtmlTemplateFactory templateFactory;
+    private final HtmlTemplateProviderFactory templateFactory;
 
     @Autowired
     public TemplatedEmailMessageDTOKafkaMessageListener(CachingEmailSender sender,
-                                                        MimeMessageBuilder builder, HtmlTemplateFactory templateFactory) {
+                                                        MimeMessageBuilder builder, HtmlTemplateProviderFactory templateFactory) {
         this.sender = sender;
         this.builder = builder;
         this.templateFactory = templateFactory;

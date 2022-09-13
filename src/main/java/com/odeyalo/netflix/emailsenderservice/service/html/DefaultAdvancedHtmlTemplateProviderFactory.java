@@ -1,13 +1,13 @@
 package com.odeyalo.netflix.emailsenderservice.service.html;
 
-import com.odeyalo.netflix.emailsenderservice.service.html.support.HtmlTemplateRegistry;
+import com.odeyalo.netflix.emailsenderservice.service.html.support.HtmlTemplateProviderRegistry;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DefaultAdvancedHtmlTemplateProviderFactory implements AdvancedHtmlTemplateProviderFactory {
-    private final HtmlTemplateRegistry container;
+    private final HtmlTemplateProviderRegistry container;
 
-    public DefaultAdvancedHtmlTemplateProviderFactory(HtmlTemplateRegistry container) {
+    public DefaultAdvancedHtmlTemplateProviderFactory(HtmlTemplateProviderRegistry container) {
         this.container = container;
     }
 
