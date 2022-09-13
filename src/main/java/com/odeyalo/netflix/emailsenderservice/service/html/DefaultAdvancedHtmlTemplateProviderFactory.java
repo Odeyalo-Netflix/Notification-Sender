@@ -4,16 +4,16 @@ import com.odeyalo.netflix.emailsenderservice.service.html.support.HtmlTemplateR
 import org.springframework.stereotype.Component;
 
 @Component
-public class DefaultAdvancedHtmlTemplateFactory implements AdvancedHtmlTemplateFactory {
+public class DefaultAdvancedHtmlTemplateProviderFactory implements AdvancedHtmlTemplateProviderFactory {
     private final HtmlTemplateRegistry container;
 
-    public DefaultAdvancedHtmlTemplateFactory(HtmlTemplateRegistry container) {
+    public DefaultAdvancedHtmlTemplateProviderFactory(HtmlTemplateRegistry container) {
         this.container = container;
     }
 
     @Override
-    public HtmlTemplate getHtmlTemplate(String type) {
-        HtmlTemplate template = container.getTemplate(type);
+    public HtmlTemplateProvider getHtmlTemplate(String type) {
+        HtmlTemplateProvider template = container.getTemplate(type);
         if (template == null) {
             throw new IllegalArgumentException(String.format("The factory cannot create or return the HtmlTemplate with type: %s", type));
         }
@@ -22,12 +22,12 @@ public class DefaultAdvancedHtmlTemplateFactory implements AdvancedHtmlTemplateF
 
 
     @Override
-    public DynamicHtmlTemplate getDynamicHtmlTemplate(String type) {
-        HtmlTemplate template = container.getTemplate(type);
-        if (!(template instanceof DynamicHtmlTemplate)) {
+    public DynamicHtmlTemplateProvider getDynamicHtmlTemplate(String type) {
+        HtmlTemplateProvider template = container.getTemplate(type);
+        if (!(template instanceof DynamicHtmlTemplateProvider)) {
             throw new IllegalArgumentException(String.format("The html template with type: %s is null or HtmlTemplate isn't DynamicHtmlTemplate instance." +
                     "HtmlTemplate info: %s", type, template));
         }
-        return (DynamicHtmlTemplate) template;
+        return (DynamicHtmlTemplateProvider) template;
     }
 }
