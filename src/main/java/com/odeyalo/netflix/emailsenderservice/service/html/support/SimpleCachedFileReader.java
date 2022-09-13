@@ -25,7 +25,7 @@ public class SimpleCachedFileReader implements CachedFileReader {
             this.cache.put(path.toAbsolutePath().toString(), bytes);
             return bytes;
         } catch (IOException e) {
-            throw new FileReadingFailedException("File reading reading was failed", "We cannot process it right now. Please, try again later", e);
+            throw new FileReadingFailedException("File reading was failed", "We cannot process it right now. Please, try again later", e);
         }
     }
 

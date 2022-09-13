@@ -4,5 +4,6 @@ WORKDIR notification-sender
 
 COPY . .
 
-#ENTRYPOINT tail -f /dev/null
+CMD mkdir templates
+
 ENTRYPOINT mvn -s maven-settings.xml clean install
