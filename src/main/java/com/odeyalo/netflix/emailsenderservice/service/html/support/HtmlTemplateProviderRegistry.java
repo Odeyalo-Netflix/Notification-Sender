@@ -1,16 +1,16 @@
 package com.odeyalo.netflix.emailsenderservice.service.html.support;
 
-import com.odeyalo.netflix.emailsenderservice.service.html.HtmlTemplate;
+import com.odeyalo.netflix.emailsenderservice.service.html.HtmlTemplateProvider;
 
-public interface HtmlTemplateRegistry {
+public interface HtmlTemplateProviderRegistry {
     /**
      * Returns the specific html template
      * @param type - template type
      * @return - html template
      */
-    HtmlTemplate getTemplate(String type);
+    HtmlTemplateProvider getTemplate(String type);
 
-    void registryTemplate(String type, HtmlTemplate template);
+    void registryTemplate(String type, HtmlTemplateProvider template);
 
     boolean containsTemplate(String type);
 
