@@ -11,4 +11,5 @@ public interface CachedFileReader {
 
     boolean isAlreadyCached(Path path);
 
+    int clearOldCache();
 }
