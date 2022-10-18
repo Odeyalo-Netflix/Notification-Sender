@@ -1,7 +1,8 @@
 package com.odeyalo.netflix.emailsenderservice.service.sender.email;
 
 import com.odeyalo.netflix.emailsenderservice.exceptions.AccessTokenResolvingProcessException;
-import com.odeyalo.netflix.emailsenderservice.service.html.HtmlTemplateProviderFactory;
+import com.odeyalo.netflix.emailsenderservice.service.support.events.EmailLetterSentEvent;
+import com.odeyalo.netflix.emailsenderservice.service.support.events.EventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,19 @@ public class GoogleXOauth2AsyncCachingMailSender implements CachingEmailSender {
     private final Session session;
     private final ConcurrentLinkedQueue<MimeMessage> cache = new ConcurrentLinkedQueue<>();
     private final Logger logger = LoggerFactory.getLogger(GoogleXOauth2AsyncCachingMailSender.class);
+    private final EventPublisher eventPublisher;
     @Value("${app.mail.username}")
     private String username;
     @Value("${app.credentials.path}")
     private String GOOGLE_OAUTH2_CREDENTIALS_JSON_FILE_PATH;
-    private final HtmlTemplateProviderFactory factory;
+
     @Autowired
-    public GoogleXOauth2AsyncCachingMailSender(@Qualifier("googleOauth2ClientAccessTokenResolver") Oauth2ClientAccessTokenResolver accessTokenResolver, Session session, HtmlTemplateProviderFactory factory) {
+    public GoogleXOauth2AsyncCachingMailSender(@Qualifier("googleOauth2ClientAccessTokenResolver") Oauth2ClientAccessTokenResolver accessTokenResolver,
+                                               Session session,
+                                               EventPublisher eventPublisher) {
         this.accessTokenResolver = accessTokenResolver;
         this.session = session;
-        this.factory = factory;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -84,12 +88,15 @@ public class GoogleXOauth2AsyncCachingMailSender implements CachingEmailSender {
             Transport smtp = session.getTransport("smtp");
             smtp.connect(username, accessToken);
             // Send messages until cache isn't empty
+            MimeMessage mimeMessage = null;
             while (!(this.cache.isEmpty())) {
                 try {
-                    MimeMessage mimeMessage = cache.poll();
+                    mimeMessage = cache.poll();
                     smtp.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
+                    this.eventPublisher.publishEvent(EmailLetterSentEvent.EVENT_NAME, new EmailLetterSentEvent(mimeMessage, true));
                 } catch (MessagingException ex) {
                     this.logger.error("Error during message sending.", ex);
+                    this.eventPublisher.publishEvent(EmailLetterSentEvent.EVENT_NAME, new EmailLetterSentEvent(mimeMessage, ex));
                 }
             }
         } catch (AccessTokenResolvingProcessException ex) {
