@@ -5,13 +5,11 @@ import com.google.auth.oauth2.UserCredentials;
 import com.odeyalo.netflix.emailsenderservice.exceptions.AccessTokenResolvingProcessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@Component
 public class GoogleOauth2ClientAccessTokenResolver implements Oauth2ClientAccessTokenResolver {
     private final Logger logger = LoggerFactory.getLogger(GoogleOauth2ClientAccessTokenResolver.class);
 
