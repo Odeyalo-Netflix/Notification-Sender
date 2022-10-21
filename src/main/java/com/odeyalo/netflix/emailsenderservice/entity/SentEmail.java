@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "sent_emails")
 public class SentEmail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
