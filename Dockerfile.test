@@ -1,0 +1,7 @@
+FROM maven:3.8.5-jdk-11-slim
+
+WORKDIR notification-sender
+
+COPY . .
+
+ENTRYPOINT mvn -s maven-settings.xml POSTGRES_USERNAME=${POSTGRES_USERNAME};POSTGRES_PASSWORD=${POSTGRES_PASSWORD};POSTGRES_URL=${POSTGRES_URL} spring-boot:run
