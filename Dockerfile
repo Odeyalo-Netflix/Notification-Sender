@@ -4,6 +4,4 @@ WORKDIR notification-sender
 
 COPY . .
 
-CMD mkdir templates
-
-ENTRYPOINT mvn -s maven-settings.xml clean install
+ENTRYPOINT mvn -s maven-settings.xml spring-boot:run

@@ -10,6 +10,7 @@ on:
       - dev
 
 env:
+  USER_NAME: ${{ secrets.USER_NAME }}
   ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
 jobs:
@@ -17,9 +18,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: test
-        run: env
-      - name: Build docker image
-        run: docker build -t image  .
-      - name: Run docker image
-        run: docker run -e token=${ACCESS_TOKEN} image
+      - name: Tests...
+        run: docker-compose -f docker-compose.test.yml up --abort-on-container-exit
