@@ -30,7 +30,7 @@
         <server>
             <id>github</id>
             <username>justJavaProgrammer</username>
-            <password>${token}</password>
+            <password>${ACCESS_TOKEN}</password>
         </server>
     </servers>
 </settings>
