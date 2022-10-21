@@ -9,8 +9,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableAsync(proxyTargetClass = true)
-@EnableEurekaClient
-@EnableKafka
+//@EnableEurekaClient
+//@EnableKafka
 @EnableScheduling
 public class EmailSenderServiceApplication {
 
